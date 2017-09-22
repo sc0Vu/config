@@ -1,4 +1,6 @@
 # config
+[![Build Status](https://travis-ci.org/sc0Vu/config.svg?branch=master)](https://travis-ci.org/sc0Vu/config)
+
 Nodejs config.
 
 # Usage
