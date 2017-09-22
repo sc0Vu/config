@@ -1,0 +1,17 @@
+{
+  "name": "config",
+  "version": "1.0.0",
+  "description": "Nodejs config.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "author": "sc0vu <alk03073135@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^4.0.2",
+    "js-yaml": "^3.10.0",
+    "request": "^2.82.0",
+    "request-promise": "^4.2.1"
+  }
+}
