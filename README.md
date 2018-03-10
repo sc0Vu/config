@@ -1,5 +1,6 @@
 # config
 [![Build Status](https://travis-ci.org/sc0Vu/config.svg?branch=master)](https://travis-ci.org/sc0Vu/config)
+[![codecov](https://codecov.io/gh/sc0Vu/config/branch/master/graph/badge.svg)](https://codecov.io/gh/sc0Vu/config)
 
 Nodejs config.
 
