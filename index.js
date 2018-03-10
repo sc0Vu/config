@@ -1,9 +1,9 @@
 module.exports = exports = function (fileName, options) {
-  var yaml = require('js-yaml')
-  var fs = require('fs-extra')
-  var request = require('request-promise')
-  var config = {}
-  var defaultOptions = {
+  const yaml = require('js-yaml')
+  const fs = require('fs-extra')
+  const request = require('request-promise')
+  const config = {}
+  const defaultOptions = {
     encoding: 'utf8'
   }
 
