@@ -1,21 +1,29 @@
-var assert = require('assert')
-var config = require('../index')('https://raw.githubusercontent.com/sc0Vu/ethdock/master/docker-compose.yml')
-var path = require('path')
+const tape = require('tape')
+const config = require('../index')('https://raw.githubusercontent.com/sc0Vu/ethdock/master/docker-compose.yml')
+const path = require('path')
 
-assert.deepEqual(config.data, {}, 'Data must be empty when initialize.')
-assert.equal(config.fileName, 'https://raw.githubusercontent.com/sc0Vu/ethdock/master/docker-compose.yml', 'Filename must be equal when initialize.')
-assert.equal(config.raw, '', 'Raw data must be empty when initialize.')
+tape('Test config', (t) => {
+  t.test('config basic properties', (st) => {
+    st.deepEquals(config.data, {}, 'Data must be empty when initialize.')
+    st.equals(config.fileName, 'https://raw.githubusercontent.com/sc0Vu/ethdock/master/docker-compose.yml', 'Filename must be equal when initialize.')
+    st.equals(config.raw, '', 'Raw data must be empty when initialize.')
+    st.end()
+  })
 
-config.load().then((loaded) => {
-  assert.equal(loaded, true, 'Config must be loaded.')
-}).then(() => {
-  var config = require('../index')(path.join(__dirname, 'test.yml'))
+  t.test('config load method', (st) => {
+    config.load().then((loaded) => {
+      st.equals(loaded, true, 'Config must be loaded.')
+    }).then(() => {
+      let config = require('../index')(path.join(__dirname, 'test.yml'))
 
-  assert.deepEqual(config.data, {}, 'Data must be empty when initialize.')
-  assert.equal(config.fileName, path.join(__dirname, 'test.yml'), 'Filename must be equal when initialize.')
-  assert.equal(config.raw, '', 'Raw data must be empty when initialize.')
+      st.deepEquals(config.data, {}, 'Data must be empty when initialize.')
+      st.equals(config.fileName, path.join(__dirname, 'test.yml'), 'Filename must be equal when initialize.')
+      st.equals(config.raw, '', 'Raw data must be empty when initialize.')
 
-  config.load().then((loaded) => {
-    assert.equal(loaded, true, 'Config must be loaded.')
+      config.load().then((loaded) => {
+        st.equals(loaded, true, 'Config must be loaded.')
+        st.end()
+      })
+    })
   })
 })

@@ -13,5 +13,8 @@
     "js-yaml": "^3.10.0",
     "request": "^2.82.0",
     "request-promise": "^4.2.1"
+  },
+  "devDependencies": {
+    "tape": "^4.9.0"
   }
 }
