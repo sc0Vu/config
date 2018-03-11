@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs-extra')
 const tape = require('tape')
 const Config = require('../index')
 const config = new Config()
@@ -6,6 +7,10 @@ const testFile = {
   online: 'https://raw.githubusercontent.com/sc0Vu/ethdock/master/docker-compose.yml',
   local: path.join(__dirname, 'test.yml'),
   notExisted: path.join(__dirname, 'testqq.yml'),
+}
+
+async function deleteFile(fileName) {
+  return await fs.unlink(fileName)
 }
 
 tape('Test config', (t) => {
@@ -35,7 +40,20 @@ tape('Test config', (t) => {
     }).catch((err) => {
       st.equals(err.message.length > 0, true)
       st.end()
-      t.end()
+    })
+  })
+
+  t.test('config save function', (st) => {
+    const anotherConfig = new Config({
+      hello: 'world'
+    })
+
+    anotherConfig.save(testFile.notExisted).then(() => {
+      anotherConfig.load(testFile.notExisted).then((data) => {
+        st.deepEquals(anotherConfig.data, data)
+        deleteFile(testFile.notExisted)
+        st.end()
+      })
     })
   })
 })
