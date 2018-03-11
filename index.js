@@ -1,41 +1,40 @@
-module.exports = exports = function (fileName, options) {
-  const yaml = require('js-yaml')
-  const fs = require('fs-extra')
-  const request = require('request-promise')
-  const config = {}
+const yaml = require('js-yaml')
+const fs = require('fs-extra')
+const request = require('request-promise')
+
+const simpleConfig = function (data, options) {
   const defaultOptions = {
     encoding: 'utf8'
   }
+  const config = {}
 
-  config.fileName = fileName
-  config.raw = ''
-  config.data = {}
-  config.options = Object.assign({}, defaultOptions, options)
+  config.data = (data !== undefined) ? data : {};
+  config.options = Object.assign({}, config.options, options)
 
-  config.load = async () => {
+  config.load = async (fileName, options) => {
+    loadOptions = Object.assign({}, defaultOptions, options)
+
     if (/^https?\:\/\/(?:[a-zA-Z0-9.\/\-]+)$/.test(fileName)) {
       try {
-        config.raw = await request({
+        raw = await request({
           method: 'GET',
           uri: fileName
         })
-        config.data = yaml.safeLoad(config.raw, config.options.encoding)
-        return true
       } catch (err) {
-        console.warn(`${err.name} message: ${err.message}`)
-        return false
+        throw err
       }
     } else {
       try {
-        config.raw = await fs.readFile(fileName, config.options.encoding)
-        config.data = yaml.safeLoad(config.raw, config.options.encoding)
-        return true
+        raw = await fs.readFile(fileName, config.options.encoding)
       } catch (err) {
-        console.warn(`${err.name} message: ${err.message}`)
-        return false
+        throw err
       }
     }
+    config.data = yaml.safeLoad(raw, loadOptions)
+    return config.data
   }
 
   return config
 }
+
+module.exports = simpleConfig
