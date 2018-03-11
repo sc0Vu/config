@@ -12,26 +12,24 @@ const simpleConfig = function (data, options) {
   config.options = Object.assign({}, config.options, options)
 
   config.load = async (fileName, options) => {
-    loadOptions = Object.assign({}, defaultOptions, options)
+    const loadOptions = Object.assign({}, defaultOptions, options)
+    let raw = ''
 
-    if (/^https?\:\/\/(?:[a-zA-Z0-9.\/\-]+)$/.test(fileName)) {
-      try {
+    try {
+      if (/^https?\:\/\/(?:[a-zA-Z0-9.\/\-]+)$/.test(fileName)) {
         raw = await request({
           method: 'GET',
           uri: fileName
         })
-      } catch (err) {
-        throw err
-      }
-    } else {
-      try {
+      } else {
         raw = await fs.readFile(fileName, config.options.encoding)
-      } catch (err) {
-        throw err
       }
+      config.data = yaml.safeLoad(raw, loadOptions)
+
+      return config.data
+    } catch (err) {
+      throw err
     }
-    config.data = yaml.safeLoad(raw, loadOptions)
-    return config.data
   }
 
   return config
